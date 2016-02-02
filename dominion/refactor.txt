@@ -1,0 +1,3 @@
+Assignment 1
+
+I have refactored dominion.c by implementing 5 of the switch statements in the cardEffect() function as their own functions. When the cases in the switch statement for adventurer, council_room, mine, remodel, & smithy are reached, they now call the corresponding functions: adventurer_card, council_room_card, mine_card, remodel_card & smithy_card.

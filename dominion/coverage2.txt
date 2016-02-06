@@ -1,28 +1,10 @@
-Testing scoreFor.
-Lines executed:19.66% of 580
-
-Testing updateCoins.
-Lines executed:16.21% of 580
-
-Testing gainCard.
-Lines executed:18.28% of 580
-
-Testing discardCard.
-Lines executed:18.28% of 580
-
-Testing council_room card.
-Lines executed:26.55% of 580
-
-Testing village card.
-Lines executed:20.34% of 580
-
-Testing embargo card.
-Lines executed:20.17% of 580
-
-Testing mine card.
+File 'dominion.c'
 Lines executed:32.59% of 580
+Branches executed:37.17% of 417
+Taken at least once:21.58% of 417
+Calls executed:30.00% of 100
 
-I found that each of my unit tests covered between 16% and 33% of the dominion.c code.There is not much I can infer based upon the results of the coverage tests. Each test covers some percentage of the code that each other test covered so the results seem almost pointless. As far as I can tell, I seem to have fairly good coverage based on my experience of nothing using gcov.
+I found that each of my unit tests covered between 16% and 30% of the dominion.c code.There is not much I can infer based upon the results of the individual coverage tests. A total of 32.59% of dominion.c lines are covered by all the unit tests. This tells me that my unit testing covers about a third of the program which is pretty good for only testing 6 functions and 2 switch statements. Obviously, all lines would theoretically need to be executed for the testing to be most effective. One other problem is that mearly looking at coverage does not tell you if the tests were effectively written or if the conditions were even met which would allow the tests to fail.
 
 Bug Report:
 

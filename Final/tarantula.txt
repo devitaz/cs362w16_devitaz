@@ -1,0 +1,24 @@
+Zachary DeVita
+March 9, 2016
+CS 362 Final
+
+Instructions for running tarantula.py:
+All makefile calls are done from tarantula.py. The implementation is a standalone script which can be simply ran alone. Must be in the same directory as the makefile, the unit test, and the Dominion implementation. 
+
+For my final project I have chosen to create my own implementation of the software testing tool Tarantula. The python based script is located in the dominion directory along with unit test being run which is called minetest.c. I had to refactor the original cardtest4.c unit test so that only one thing was being tested and so that the only output being created was a 1 for failing tests and a 0 for passing tests. This same implementation of tarantula.py could easily be refactored to have the user input the path and file name of the unit test being run, but for the purpose of the assignment I have chose to simply focus on the same bug as was analyzed in my debugging.txt file.
+
+My implementation of tarantula.py runs a unit test 1,000 times, and stores information about the total number of times the test passed and failed. Also stored are the number of times each line of dominion.c was executed by both passing cases as well as failing cases. These number as essential for calculating the "suspiciousness" of a line code. The program outputs the entire dominion.c code , and using the suspiciousness of each line to determines the color of the text ouput.
+
+The way this works is that a subprocess call removes all the object files being stored for dominion.c, then runs a new call to 'make all', and sends all output and stderr to dev/null. Then in the loop for the 1,000 cases, the unit test is ran and its ouput is piped into tarantula.py and stored in a variable. If the output is a 1, then the totalfailed variable is incremented, otherwise the totalpassed variable is incremented. Another subprocess call to "gcov dominion.c" is then ran in order to find which dominion.c lines had been executed. Each line of the dominion.c.gcov is individually split into an array; the first element storing the number of times a line was executed, and the second storing the dominion.c line number. In failing cases, an int array the size of dominion.c has its corresponding line number element incremented, and the same is done in a separate array for passing cases. After all tests have been run and the data has been collected, each line is printed with the calculation for suspiciousness determining its color. Curly brackets on lines by themselves and comments are kept the default color, green represents lines which are not executed or have a suspiciousness level of zero, yellow represents lines which are not very suspicious, and red represents lines which are deemed very suspicious.     
+
+I had previously already localized the bug of interest using gcov and documented it in my debugging.txt. I figured this would give me the greatest insight on my tarantula implementation by using a bug which had already been localized. I found the color coded text to be very intuitive, and the visual aspect made analyzing the results fun. It did work; the line which directly causes the bug was red. It is the return statement on line 707.
+
+if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+		return -1;
+
+The 'if' statement and the actual conditional are ran with both passing and failing cases, so it makes sense that it is not suspicious. Some results do not make sense though. Most of the resulting color coding scheme seems to make sense, but then some lines of code are randomly red; lines that seem like they should not ever be executed by the unit test. For instance, line 618 was red.
+
+case minion:  
+
+But not the return statement corresponding to the minion case or any of the case statements prior to it, not even the mine case statement which is the card being tested and which comes before the minion case, is determined suspicious. There are a few lines for which I have no solid explanation, but there are only a few red lines total in the results, and one of them happens to be the line executed as a result of the bug. If desired, and if the bug wasn't already located, I could use the results of this test to narrow my search for the bug or to help choose a location to set break points to use with a debugger. 
+
